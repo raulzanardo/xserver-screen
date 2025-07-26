@@ -2,6 +2,10 @@
 // chain of matrices.
 // Author: Tony DiCola
 
+#include <cassert>
+#include <vector>
+
+#include "led-matrix.h"
 
 using namespace rgb_matrix;
 using namespace std;
