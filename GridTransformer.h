@@ -6,8 +6,11 @@
 #include <vector>
 #include "led-matrix.h" // Ensure this is included
 
+// If Canvas and CanvasTransformer are defined in a different header, include it directly
+#include "some-other-header.h" // Replace with the actual header file name
+
 namespace rgb_matrix {
-  // These forward declarations are not necessary if the full definitions are included.
+  // Forward declarations are not necessary if the full definitions are included.
   // class Canvas; 
   // class CanvasTransformer;
 }
