@@ -17,9 +17,6 @@ all : $(BINARIES)
 $(RGB_LIBRARY): FORCE
 	$(MAKE) -C $(RGB_LIBDIR)
 
-demo : demo-main.o $(RGB_LIBRARY)
-	$(CXX) $< -o $@ $(LDFLAGS)
-
 xserver-screen : xserver-screen.o
 
 # All the binaries that have the same name as the object file.q
