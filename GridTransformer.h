@@ -7,8 +7,9 @@
 #include "led-matrix.h" // Ensure this is included
 
 namespace rgb_matrix {
-  class Canvas; // Forward declaration if needed
-  class CanvasTransformer; // Forward declaration if needed
+  // These forward declarations are not necessary if the full definitions are included.
+  // class Canvas; 
+  // class CanvasTransformer;
 }
 
 class GridTransformer : public rgb_matrix::Canvas, public rgb_matrix::CanvasTransformer {
