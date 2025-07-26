@@ -10,6 +10,13 @@
 using namespace rgb_matrix;
 using namespace std;
 
+// Ensure the namespace and classes are correctly defined
+namespace rgb_matrix {
+  class Canvas; 
+  class CanvasTransformer;
+}
+
+
 class GridTransformer : public rgb_matrix::Canvas, public rgb_matrix::CanvasTransformer
 {
 public:
