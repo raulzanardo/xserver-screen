@@ -6,6 +6,8 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
+#include <GridTransformer.h>
+
 #define UPDATE_INTERVAL 10000
 #define SCREEENSHOT_X 0
 #define SCREEENSHOT_Y 0
