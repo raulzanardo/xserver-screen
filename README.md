@@ -49,6 +49,7 @@ Use the included `run` script to start the virtual display and run your applicat
 
 For example:
 ```bash
+./run xclock -geometry 192x128
 ./run firefox
 ./run /usr/games/your-game
 ```
