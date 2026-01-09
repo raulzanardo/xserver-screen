@@ -6,12 +6,11 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
-#include "GridTransformer.h"
 
 #define UPDATE_INTERVAL 10000
 #define SCREEENSHOT_X 0
 #define SCREEENSHOT_Y 0
-#define SCREEENSHOT_WIDTH 128
+#define SCREEENSHOT_WIDTH 192
 #define SCREEENSHOT_HEIGHT 128
 
 using rgb_matrix::Canvas;

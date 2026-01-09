@@ -1,0 +1,38 @@
+#!/bin/sh
+
+clear
+
+export DISPLAY=:3.0
+export SDL_VIDEODRIVER=x11
+export SDL_VIDEO_WINDOW_POS=0,0
+export SDL_VIDEO_CENTERED=0
+
+Xvfb $DISPLAY -screen 0 192x128x24 &
+XVFB_PID=$!
+
+sleep 1
+
+sudo xserver-screen \
+        --led-gpio-mapping=regular \
+        --led-brightness=60 \
+        --led-rows=64 \
+        --led-cols=64 \
+        --led-chain=3 \
+        --led-parallel=2 \
+        --led-slowdown-gpio=4 \
+        --led-scan-mode=1 \
+        --led-limit-refresh=90 \
+        --led-pwm-bits=11 \
+        --led-panel-type=FM6126A &
+XSERVER_PID=$!
+
+sleep 1
+
+echo "===== Running your command: $* ====="
+"$@" 2>&1
+
+echo "===== Command finished ====="
+
+# Cleanup
+sudo kill $XSERVER_PID
+sudo kill $XVFB_PID
