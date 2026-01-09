@@ -41,8 +41,8 @@ BINDIR = $(PREFIX)/bin
 install: all
 	install -d $(BINDIR)
 	install -m 755 xserver-screen $(BINDIR)/xserver-screen
-	install -m 755 run $(BINDIR)/xserver-screen-run
+	install -m 755 run $(BINDIR)/run
 
 uninstall:
 	rm -f $(BINDIR)/xserver-screen
-	rm -f $(BINDIR)/xserver-screen-run
+	rm -f $(BINDIR)/run
