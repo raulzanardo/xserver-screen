@@ -50,14 +50,14 @@ This installs `xserver-screen` and `run` to `/usr/local/bin`.
 Use the included `run` script to start the virtual display and run your application:
 
 ```bash
-./run your_application
+run your_application
 ```
 
 For example:
 ```bash
-./run xclock -geometry 192x128
-./run firefox
-./run /usr/games/your-game
+run xclock -geometry 192x128
+run firefox
+run /usr/games/your-game
 ```
 
 ## Configuration
