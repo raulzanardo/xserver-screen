@@ -5,6 +5,8 @@ This project was inspired by and uses code from [jenissimo/pico8-led](https://gi
 
 Display any graphical application on an RGB LED matrix using Raspberry Pi GPIO. This program captures the output from a virtual X server (Xvfb) and renders it in real-time on an LED matrix display.
 
+**⚠️ Compatible with Raspberry Pi 1-4 and Zero only. NOT compatible with Raspberry Pi 5.**
+
 ## How It Works
 
 The application:
@@ -15,7 +17,7 @@ The application:
 
 ## Requirements
 
-- Raspberry Pi with GPIO pins
+- Raspberry Pi with GPIO pins (Pi 1, 2, 3, 4, or Zero - **NOT Pi 5**)
 - RGB LED Matrix panels (connected via GPIO)
 - rpi-rgb-led-matrix library (included as submodule)
 
