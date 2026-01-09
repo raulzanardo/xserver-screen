@@ -39,6 +39,12 @@ Build the project:
 make
 ```
 
+Optionally, install system-wide:
+```bash
+sudo make install
+```
+This installs `xserver-screen` and `run` to `/usr/local/bin`.
+
 ## Usage
 
 Use the included `run` script to start the virtual display and run your application:
@@ -67,14 +73,14 @@ Options:
   -u, --update-interval <microseconds>  Update interval in microseconds (default: 10000)
   -x, --x-offset <pixels>              Screenshot X offset (default: 0)
   -y, --y-offset <pixels>              Screenshot Y offset (default: 0)
-  -w, --width <pixels>                 Screenshot width (default: 192)
-  -t, --height <pixels>                Screenshot height (default: 128)
   -h, --help                           Show help message
 ```
 
+Screenshot dimensions are automatically calculated from the LED matrix configuration.
+
 Example:
 ```bash
-sudo xserver-screen -u 20000 -w 128 -t 128 --led-rows=64 --led-cols=64
+sudo xserver-screen -u 20000 -x 0 -y 0 --led-rows=64 --led-cols=64
 ```
 
 ### LED Matrix Settings
@@ -103,3 +109,13 @@ You can also adjust the screenshot region using the command-line options to capt
 - Visual effects and animations
 - Media players
 - Any X11 application
+
+## Changes from pico8-led
+
+This project is based on [jenissimo/pico8-led](https://github.com/jenissimo/pico8-led) with the following enhancements:
+
+- **Generalized for any application**: Works with any X11 application, not just PICO-8
+- **Automatic dimension detection**: Screenshot size automatically matches LED matrix configuration
+- **Flexible capture region**: Added `-x` and `-y` options to capture from any screen position (default: 0,0 instead of 128,128)
+- **Simplified run script**: Single `run` script accepts any application as argument
+- **System installation**: Added `make install` target for system-wide installation
