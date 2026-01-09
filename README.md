@@ -1,17 +1,13 @@
-Displaying PICO-8 on RGB LED display with Raspberry Pi GPIO
+Displaying Any Software on RGB LED Display with Raspberry Pi GPIO
 ==================================================
-
-This little program runs PICO-8 in virtual X-server (Xvfb), makes screenshot every 10000 microseconds and display it on LED matrix
+This program runs any graphical application in a virtual X-server (Xvfb), captures screenshots at regular intervals, and displays them on an LED matrix connected via Raspberry Pi GPIO.
 
 Instructions
 --------
-
 Clone repo recursively with submodules
 ```
 git clone --recurse-submodules https://github.com/jenissimo/pico8-led.git
 ```
-
-Put your copy of *PICO-8* for Raspberry PI into `pico-8/` directory
 
 Install dependencies:
 ```
@@ -22,17 +18,24 @@ Adjust settings of your LED matrix in `run_led.sh` using `rpi-rgb-led-matrix` do
 
 Running
 --------
-Run PICO-8 in Splore mode:
+Run any graphical application:
 ```
-./run_splore.sh
+DISPLAY=:1 xvfb-run -s "-screen 0 128x128x24" your_application &
+./led_display
 ```
---------
-Run PICO-8 game:
-```
-./run_game.sh your_pico_game.p8
-```
-Configure gamepad
---------
-For configuring gamepad you can use following documentation: https://pico-8.fandom.com/wiki/Controllers
 
-Pre-compiled `controllermap` is included in repo
+Or modify the included shell scripts to run your specific application.
+
+Example uses:
+- Games and gaming engines
+- Visualization tools
+- Custom graphical applications
+- Terminal applications with GUI
+- Media players
+- Web browsers in kiosk mode
+
+Configuration
+--------
+You can adjust the screenshot capture interval and display settings by modifying the source code. The default capture rate is every 10000 microseconds (100 FPS).
+
+For input device configuration, refer to your specific application's documentation.
