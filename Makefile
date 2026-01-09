@@ -19,7 +19,7 @@ $(RGB_LIBRARY): FORCE
 
 xserver-screen : xserver-screen.o
 
-# All the binaries that have the same name as the object file.q
+# All the binaries that have the same name as the object file.
 % : %.o $(RGB_LIBRARY)
 	$(CXX) $< -o $@ $(LDFLAGS)
 
@@ -41,6 +41,8 @@ BINDIR = $(PREFIX)/bin
 install: all
 	install -d $(BINDIR)
 	install -m 755 xserver-screen $(BINDIR)/xserver-screen
+	install -m 755 run $(BINDIR)/xserver-screen-run
 
 uninstall:
 	rm -f $(BINDIR)/xserver-screen
+	rm -f $(BINDIR)/xserver-screen-run

@@ -34,5 +34,16 @@ echo "===== Running your command: $* ====="
 echo "===== Command finished ====="
 
 # Cleanup
-sudo kill $XSERVER_PID
-sudo kill $XVFB_PID
+if [ -n "$XSERVER_PID" ] && kill -0 $XSERVER_PID 2>/dev/null; then
+    sudo kill $XSERVER_PID
+    sleep 1
+    # Force kill if still running
+    kill -0 $XSERVER_PID 2>/dev/null && sudo kill -9 $XSERVER_PID 2>/dev/null
+fi
+
+if [ -n "$XVFB_PID" ] && kill -0 $XVFB_PID 2>/dev/null; then
+    kill $XVFB_PID
+    sleep 1
+    # Force kill if still running
+    kill -0 $XVFB_PID 2>/dev/null && kill -9 $XVFB_PID 2>/dev/null
+fi
