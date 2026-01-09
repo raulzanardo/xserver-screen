@@ -1,41 +1,83 @@
-Displaying Any Software on RGB LED Display with Raspberry Pi GPIO
-==================================================
-This program runs any graphical application in a virtual X-server (Xvfb), captures screenshots at regular intervals, and displays them on an LED matrix connected via Raspberry Pi GPIO.
+X Server Screen - RGB LED Matrix Display
+==========================================
 
-Instructions
---------
-Clone repo recursively with submodules
-```
-git clone --recurse-submodules https://github.com/jenissimo/pico8-led.git
+This project was inspired by and uses code from [jenissimo/pico8-led](https://github.com/jenissimo/pico8-led).
+
+Display any graphical application on an RGB LED matrix using Raspberry Pi GPIO. This program captures the output from a virtual X server (Xvfb) and renders it in real-time on an LED matrix display.
+
+## How It Works
+
+The application:
+1. Creates a virtual X server display (192x128 pixels in the current run script configuration)
+2. Continuously captures screenshots from the X display
+3. Renders each frame to the RGB LED matrix via GPIO
+4. Supports real-time display at up to 100 FPS
+
+## Requirements
+
+- Raspberry Pi with GPIO pins
+- RGB LED Matrix panels (connected via GPIO)
+- rpi-rgb-led-matrix library (included as submodule)
+
+## Installation
+
+Clone the repository with submodules:
+```bash
+git clone --recurse-submodules https://github.com/raulzanardo/xserver-screen.git
+cd xserver-screen
 ```
 
 Install dependencies:
-```
+```bash
 sudo apt-get install xvfb libx11-dev
 ```
 
-Adjust settings of your LED matrix in `run_led.sh` using `rpi-rgb-led-matrix` documentation: https://github.com/hzeller/rpi-rgb-led-matrix/blob/master/README.md
-
-Running
---------
-Run any graphical application:
-```
-DISPLAY=:1 xvfb-run -s "-screen 0 128x128x24" your_application &
-./led_display
+Build the project:
+```bash
+make
 ```
 
-Or modify the included shell scripts to run your specific application.
+## Usage
 
-Example uses:
-- Games and gaming engines
-- Visualization tools
-- Custom graphical applications
-- Terminal applications with GUI
+Use the included `run` script to start the virtual display and run your application:
+
+```bash
+./run your_application
+```
+
+For example:
+```bash
+./run firefox
+./run /usr/games/your-game
+```
+
+## Configuration
+
+### LED Matrix Settings
+
+Edit the `run` script to adjust your LED matrix configuration:
+- `--led-rows`: Number of rows in each panel (default: 64)
+- `--led-cols`: Number of columns in each panel (default: 64)
+- `--led-chain`: Number of panels chained horizontally (default: 3)
+- `--led-parallel`: Number of parallel chains (default: 2)
+- `--led-brightness`: Display brightness 0-100 (default: 60)
+- `--led-panel-type`: Panel driver chip type (default: FM6126A)
+
+For more options, see the [rpi-rgb-led-matrix documentation](https://github.com/hzeller/rpi-rgb-led-matrix).
+
+### Display Resolution
+
+The virtual X server resolution is set to 192x128 pixels to match the LED matrix configuration (3 panels × 64 columns = 192 width, 2 panels × 64 rows = 128 height). Adjust the Xvfb resolution in the `run` script to match your matrix setup.
+
+### Frame Rate
+
+The default capture interval is 10000 microseconds (100 FPS). To adjust, modify `UPDATE_INTERVAL` in [xserver-screen.cc](xserver-screen.cc#L10).
+
+## Use Cases
+
+- Retro gaming displays
+- Information dashboards
+- Digital signage
+- Visual effects and animations
 - Media players
-- Web browsers in kiosk mode
-
-Configuration
---------
-You can adjust the screenshot capture interval and display settings by modifying the source code. The default capture rate is every 10000 microseconds (100 FPS).
-
-For input device configuration, refer to your specific application's documentation.
+- Any X11 application
