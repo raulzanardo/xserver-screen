@@ -5,13 +5,12 @@
 #include <unistd.h>
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
+#include <string>
+#include <vector>
 
-
-#define UPDATE_INTERVAL 10000
-#define SCREEENSHOT_X 0
-#define SCREEENSHOT_Y 0
-#define SCREEENSHOT_WIDTH 192
-#define SCREEENSHOT_HEIGHT 128
+#define DEFAULT_UPDATE_INTERVAL 10000
+#define DEFAULT_SCREEENSHOT_X 0
+#define DEFAULT_SCREEENSHOT_Y 0
 
 using rgb_matrix::Canvas;
 using rgb_matrix::FrameCanvas;
@@ -56,7 +55,7 @@ ColorComponentModifier GetColorComponentModifier(unsigned long mask)
     return color_component_modifier;
 }
 
-int ShowScreen(Display *display, size_t x, size_t y, size_t width, size_t height, RGBMatrix *matrix)
+int ShowScreen(Display *display, size_t x, size_t y, size_t width, size_t height, RGBMatrix *matrix, int update_interval)
 {
     FrameCanvas *offscreen_canvas = matrix->CreateFrameCanvas();
     XColor color;
@@ -96,7 +95,7 @@ int ShowScreen(Display *display, size_t x, size_t y, size_t width, size_t height
 
         offscreen_canvas = matrix->SwapOnVSync(offscreen_canvas);
         XDestroyImage(img);
-        usleep(UPDATE_INTERVAL);
+        usleep(update_interval);
     }
 
     return 0;
@@ -104,18 +103,98 @@ int ShowScreen(Display *display, size_t x, size_t y, size_t width, size_t height
 
 int usage(const char *progname)
 {
-    fprintf(stderr, "Usage: %s [led-matrix-options]\n",
-            progname);
+    fprintf(stderr, "Usage: %s [options] [led-matrix-options]\n", progname);
+    fprintf(stderr, "Options:\n");
+    fprintf(stderr, "  -u, --update-interval <microseconds>  Update interval in microseconds (default: %d)\n", DEFAULT_UPDATE_INTERVAL);
+    fprintf(stderr, "  -x, --x-offset <pixels>              Screenshot X offset (default: %d)\n", DEFAULT_SCREEENSHOT_X);
+    fprintf(stderr, "  -y, --y-offset <pixels>              Screenshot Y offset (default: %d)\n", DEFAULT_SCREEENSHOT_Y);
+    fprintf(stderr, "  -h, --help                           Show this help message\n\n");
+    fprintf(stderr, "Screenshot dimensions are automatically calculated from LED matrix configuration.\n\n");
+    fprintf(stderr, "LED Matrix options:\n");
     rgb_matrix::PrintMatrixFlags(stderr);
     return 1;
 }
 
 int main(int argc, char *argv[])
 {
-    // Initialize the RGB matrix with
+    int update_interval = DEFAULT_UPDATE_INTERVAL;
+    int screenshot_x = DEFAULT_SCREEENSHOT_X;
+    int screenshot_y = DEFAULT_SCREEENSHOT_Y;
+
+    // Manual parsing of custom options
+    std::vector<char *> new_argv;
+    new_argv.push_back(argv[0]);
+    for (int i = 1; i < argc; ++i)
+    {
+        const std::string arg = argv[i];
+        if (arg == "-u" || arg == "--update-interval")
+        {
+            if (i + 1 < argc)
+            {
+                update_interval = atoi(argv[++i]);
+                if (update_interval <= 0)
+                {
+                    fprintf(stderr, "Error: Update interval must be positive\n");
+                    return 1;
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Error: %s requires an argument\n", arg.c_str());
+                return usage(argv[0]);
+            }
+        }
+        else if (arg == "-x" || arg == "--x-offset")
+        {
+            if (i + 1 < argc)
+            {
+                screenshot_x = atoi(argv[++i]);
+                if (screenshot_x < 0)
+                {
+                    fprintf(stderr, "Error: X offset must be non-negative\n");
+                    return 1;
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Error: %s requires an argument\n", arg.c_str());
+                return usage(argv[0]);
+            }
+        }
+        else if (arg == "-y" || arg == "--y-offset")
+        {
+            if (i + 1 < argc)
+            {
+                screenshot_y = atoi(argv[++i]);
+                if (screenshot_y < 0)
+                {
+                    fprintf(stderr, "Error: Y offset must be non-negative\n");
+                    return 1;
+                }
+            }
+            else
+            {
+                fprintf(stderr, "Error: %s requires an argument\n", arg.c_str());
+                return usage(argv[0]);
+            }
+        }
+        else if (arg == "-h" || arg == "--help")
+        {
+            return usage(argv[0]);
+        }
+        else
+        {
+            new_argv.push_back(argv[i]);
+        }
+    }
+
+    int new_argc = new_argv.size();
+    char **new_argv_ptr = new_argv.data();
+
+    // Initialize the RGB matrix
     RGBMatrix::Options matrix_options;
     rgb_matrix::RuntimeOptions runtime_opt;
-    if (!rgb_matrix::ParseOptionsFromFlags(&argc, &argv,
+    if (!rgb_matrix::ParseOptionsFromFlags(&new_argc, &new_argv_ptr,
                                            &matrix_options, &runtime_opt))
     {
         return usage(argv[0]);
@@ -128,6 +207,10 @@ int main(int argc, char *argv[])
     if (matrix == NULL)
         return 1;
 
+    // Calculate screenshot dimensions from matrix configuration
+    int screenshot_width = matrix->width();
+    int screenshot_height = matrix->height();
+
     Display *display;
     char *dpy_name = std::getenv("DISPLAY");
 
@@ -138,6 +221,10 @@ int main(int argc, char *argv[])
     }
 
     fprintf(stdout, "DISPLAY is %s:\n", dpy_name);
+    fprintf(stdout, "Update interval: %d microseconds (%.1f FPS)\n",
+            update_interval, 1000000.0 / update_interval);
+    fprintf(stdout, "Screenshot region: x=%d, y=%d, width=%d, height=%d\n",
+            screenshot_x, screenshot_y, screenshot_width, screenshot_height);
 
     display = XOpenDisplay(dpy_name);
     if (display == NULL)
@@ -147,7 +234,7 @@ int main(int argc, char *argv[])
     }
 
     // Put screnshot from display on RGB Matrix
-    ShowScreen(display, SCREEENSHOT_X, SCREEENSHOT_Y, SCREEENSHOT_WIDTH, SCREEENSHOT_HEIGHT, matrix);
+    ShowScreen(display, screenshot_x, screenshot_y, screenshot_width, screenshot_height, matrix, update_interval);
 
     XCloseDisplay(display);
     matrix->Clear();

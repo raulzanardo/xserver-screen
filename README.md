@@ -53,6 +53,27 @@ For example:
 
 ## Configuration
 
+### Command-Line Options
+
+The `xserver-screen` binary supports several command-line options:
+
+```bash
+sudo xserver-screen [options] [led-matrix-options]
+
+Options:
+  -u, --update-interval <microseconds>  Update interval in microseconds (default: 10000)
+  -x, --x-offset <pixels>              Screenshot X offset (default: 0)
+  -y, --y-offset <pixels>              Screenshot Y offset (default: 0)
+  -w, --width <pixels>                 Screenshot width (default: 192)
+  -t, --height <pixels>                Screenshot height (default: 128)
+  -h, --help                           Show help message
+```
+
+Example:
+```bash
+sudo xserver-screen -u 20000 -w 128 -t 128 --led-rows=64 --led-cols=64
+```
+
 ### LED Matrix Settings
 
 Edit the `run` script to adjust your LED matrix configuration:
@@ -69,9 +90,7 @@ For more options, see the [rpi-rgb-led-matrix documentation](https://github.com/
 
 The virtual X server resolution is set to 192x128 pixels to match the LED matrix configuration (3 panels × 64 columns = 192 width, 2 panels × 64 rows = 128 height). Adjust the Xvfb resolution in the `run` script to match your matrix setup.
 
-### Frame Rate
-
-The default capture interval is 10000 microseconds (100 FPS). To adjust, modify `UPDATE_INTERVAL` in [xserver-screen.cc](xserver-screen.cc#L10).
+You can also adjust the screenshot region using the command-line options to capture a specific portion of the virtual display.
 
 ## Use Cases
 
