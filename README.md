@@ -39,7 +39,7 @@ Build the project:
 make
 ```
 
-Optionally, install system-wide:
+Install it:
 ```bash
 sudo make install
 ```
