@@ -33,14 +33,19 @@ echo "Press any key to quit..."
 
 # Function to listen for key press and kill the command
 listen_for_keypress() {
-    stty -echo -icanon
-    dd if=/dev/tty bs=1 count=1 2>/dev/null
-    stty echo icanon
-    if [ -n "$XSERVER_PID" ] && kill -0 $XSERVER_PID 2>/dev/null; then
-        echo ""
-        echo "===== Key pressed, terminating ====="
-        sudo kill $XSERVER_PID 2>/dev/null
-        kill $XSERVER_PID 2>/dev/null
+    # Only proceed if we have a terminal
+    if [ -t 0 ]; then
+        old_tty=$(stty -g 2>/dev/null)
+        stty -echo -icanon 2>/dev/null
+        read -r unused < /dev/tty 2>/dev/null
+        [ -n "$old_tty" ] && stty "$old_tty" 2>/dev/null
+        
+        if [ -n "$XSERVER_PID" ] && kill -0 $XSERVER_PID 2>/dev/null; then
+            echo ""
+            echo "===== Key pressed, terminating ====="
+            sudo kill $XSERVER_PID 2>/dev/null
+            kill $XSERVER_PID 2>/dev/null
+        fi
     fi
 }
 
