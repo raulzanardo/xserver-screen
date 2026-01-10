@@ -1,5 +1,4 @@
-X Server Screen - RGB LED Matrix Display
-==========================================
+# X Server Screen - RGB LED Matrix Display
 
 This project was inspired by and uses code from [jenissimo/pico8-led](https://github.com/jenissimo/pico8-led).
 
@@ -7,9 +6,45 @@ Display any graphical application on an RGB LED matrix using Raspberry Pi GPIO. 
 
 **⚠️ Compatible with Raspberry Pi 1-4 and Zero only. NOT compatible with Raspberry Pi 5.**
 
+## Demos
+
+### Mario:
+
+This is the port of Super Mario 64 that was made for raspberry pi, it was instaled via [PiKISS](https://github.com/jmcerrejon/PiKISS)
+
+### WebCam stream:
+
+Stream the usb webcamera with the address /dev/video0 or anything that ffplay can play.
+
+```Bash
+run ffplay -vf "scale=192:128,hflip" /dev/video0
+```
+
+### Primordis
+
+[Primordis](https://github.com/Transcenduality/primordis) is a cool particle-based life simulation. The application was modified so the screen resolution is smaller, the particle has only one pixel and a few more tweaks so it looks good in a smaller screen.
+
+```bash
+run python Primordis.py
+```
+
+All the emulators
+
+Quake
+Quake 2
+Doom
+Doom 2
+
+Celeste
+
+Pico-8
+
+CurseOfTheArrow-V1.8.3-universal.love
+
 ## How It Works
 
 The application:
+
 1. Creates a virtual X server display (192x128 pixels in the current run script configuration)
 2. Continuously captures screenshots from the X display
 3. Renders each frame to the RGB LED matrix via GPIO
@@ -24,25 +59,30 @@ The application:
 ## Installation
 
 Clone the repository with submodules:
+
 ```bash
 git clone --recurse-submodules https://github.com/raulzanardo/xserver-screen.git
 cd xserver-screen
 ```
 
 Install dependencies:
+
 ```bash
 sudo apt-get install xvfb libx11-dev
 ```
 
 Build the project:
+
 ```bash
 make
 ```
 
 Install it:
+
 ```bash
 sudo make install
 ```
+
 This installs `xserver-screen` and `run` to `/usr/local/bin`.
 
 ## Usage
@@ -54,6 +94,7 @@ run your_application
 ```
 
 For example:
+
 ```bash
 run xclock -geometry 192x128
 run firefox
@@ -79,6 +120,7 @@ Options:
 Screenshot dimensions are automatically calculated from the LED matrix configuration.
 
 Example:
+
 ```bash
 sudo xserver-screen -u 20000 -x 0 -y 0 --led-rows=64 --led-cols=64
 ```
@@ -86,6 +128,7 @@ sudo xserver-screen -u 20000 -x 0 -y 0 --led-rows=64 --led-cols=64
 ### LED Matrix Settings
 
 Edit the `run` script to adjust your LED matrix configuration:
+
 - `--led-rows`: Number of rows in each panel (default: 64)
 - `--led-cols`: Number of columns in each panel (default: 64)
 - `--led-chain`: Number of panels chained horizontally (default: 3)
