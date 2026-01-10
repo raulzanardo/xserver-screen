@@ -21,7 +21,7 @@ sudo xserver-screen \
         --led-parallel=2 \
         --led-slowdown-gpio=4 \
         --led-scan-mode=1 \
-        --led-limit-refresh=90 \
+        --led-limit-refresh=60 \
         --led-pwm-bits=11 \
         --led-panel-type=FM6126A &
 XSERVER_PID=$!
