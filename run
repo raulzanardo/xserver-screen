@@ -7,6 +7,39 @@ export SDL_VIDEODRIVER=x11
 export SDL_VIDEO_WINDOW_POS=0,0
 export SDL_VIDEO_CENTERED=0
 
+# Cleanup function
+cleanup() {
+    echo ""
+    echo "===== Cleaning up ====="
+    
+    # Kill the user command if it's still running
+    if [ -n "$USER_CMD_PID" ] && kill -0 $USER_CMD_PID 2>/dev/null; then
+        kill $USER_CMD_PID 2>/dev/null
+        sleep 0.5
+        kill -0 $USER_CMD_PID 2>/dev/null && kill -9 $USER_CMD_PID 2>/dev/null
+    fi
+    
+    # Kill xserver-screen
+    if [ -n "$XSERVER_PID" ] && sudo kill -0 $XSERVER_PID 2>/dev/null; then
+        sudo kill $XSERVER_PID 2>/dev/null
+        sleep 0.5
+        sudo kill -0 $XSERVER_PID 2>/dev/null && sudo kill -9 $XSERVER_PID 2>/dev/null
+    fi
+    
+    # Kill Xvfb
+    if [ -n "$XVFB_PID" ] && kill -0 $XVFB_PID 2>/dev/null; then
+        kill $XVFB_PID 2>/dev/null
+        sleep 0.5
+        kill -0 $XVFB_PID 2>/dev/null && kill -9 $XVFB_PID 2>/dev/null
+    fi
+    
+    echo "===== Cleanup complete ====="
+    exit 0
+}
+
+# Set up trap to catch SIGINT (Ctrl+C) and SIGTERM
+trap cleanup INT TERM
+
 Xvfb $DISPLAY -screen 0 192x128x24 &
 XVFB_PID=$!
 
@@ -29,21 +62,9 @@ XSERVER_PID=$!
 sleep 1
 
 echo "===== Running your command: $* ====="
-"$@" 2>&1
+"$@" &
+USER_CMD_PID=$!
+wait $USER_CMD_PID
 
 echo "===== Command finished ====="
-
-# Cleanup
-if [ -n "$XSERVER_PID" ] && kill -0 $XSERVER_PID 2>/dev/null; then
-    sudo kill $XSERVER_PID
-    sleep 1
-    # Force kill if still running
-    kill -0 $XSERVER_PID 2>/dev/null && sudo kill -9 $XSERVER_PID 2>/dev/null
-fi
-
-if [ -n "$XVFB_PID" ] && kill -0 $XVFB_PID 2>/dev/null; then
-    kill $XVFB_PID
-    sleep 1
-    # Force kill if still running
-    kill -0 $XVFB_PID 2>/dev/null && kill -9 $XVFB_PID 2>/dev/null
-fi
+cleanup
