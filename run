@@ -29,9 +29,31 @@ XSERVER_PID=$!
 sleep 1
 
 echo "===== Running your command: $* ====="
+echo "Press any key to quit..."
+
+# Function to listen for key press and kill the command
+listen_for_keypress() {
+    stty -echo -icanon
+    dd if=/dev/tty bs=1 count=1 2>/dev/null
+    stty echo icanon
+    if [ -n "$XSERVER_PID" ] && kill -0 $XSERVER_PID 2>/dev/null; then
+        echo ""
+        echo "===== Key pressed, terminating ====="
+        sudo kill $XSERVER_PID 2>/dev/null
+        kill $XSERVER_PID 2>/dev/null
+    fi
+}
+
+# Start key listener in background
+listen_for_keypress &
+LISTENER_PID=$!
+
 "$@" 2>&1
 
 echo "===== Command finished ====="
+
+# Kill the listener if still running
+kill $LISTENER_PID 2>/dev/null
 
 # Cleanup
 if [ -n "$XSERVER_PID" ] && kill -0 $XSERVER_PID 2>/dev/null; then
