@@ -199,7 +199,7 @@ run xclock -geometry 192x128
 
 ### Mednafen
 
-I was able to run a bunch of consoles using [Mednafen](https://mednafen.github.io/)
+I was able to run a bunch of consoles using [Mednafen](https://mednafen.github.io/), it has a really flexible config file.
 
 ## Interesting commands while using Xvfb
 
