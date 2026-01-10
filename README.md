@@ -6,15 +6,64 @@ Display any graphical application on an RGB LED matrix using Raspberry Pi GPIO. 
 
 **⚠️ Compatible with Raspberry Pi 1-4 and Zero only. NOT compatible with Raspberry Pi 5.**
 
-## Demos
+## Examples
 
-### Mario:
+### DOOM
 
-This is the port of Super Mario 64 that was made for raspberry pi, it was instaled via [PiKISS](https://github.com/jmcerrejon/PiKISS)
+It had to be done. Running chocolate-doom with modified chocolate-doom.cfg file.
 
-### WebCam stream:
+```bash
+run chocolate-doom
+```
 
-Stream the usb webcamera with the address /dev/video0 or anything that ffplay can play.
+### Quake 2
+
+It is also a cool app to run in the matrix, but I couldn't fix the HUD location and it is really hard to play with the joystick, at least for me it is
+
+### SM64:
+
+This is the port of SM64 that was made for raspberry pi, it was installed via [PiKISS](https://github.com/jmcerrejon/PiKISS)
+
+### 2s2h
+
+The port of 2s2h that the shall not be named from the company that shall not be named, also from [PiKISS](https://github.com/jmcerrejon/PiKISS).
+This one I was not able to hard code the window size and position in the config so I had to use two commands in different ssh sessions:
+
+```bash
+# will run the game in it's location folder
+run ./2s2h.elf
+
+# will move the window to the top left and redize to the matrix size
+xdotool search --class "2s2h.elf" windowsize 192 128 windowmove 0 0
+```
+
+### Half Life 1
+
+Another cool one from [PiKISS](https://github.com/jmcerrejon/PiKISS), this one also need to use xdotool to config it's size and position
+
+```bash
+# will run the game in it's location folder
+run ./xash3d
+
+# will move the window to the top left and redize to the matrix size
+xdotool search --class "xash3d" windowsize 192 128 windowmove 0 0
+```
+
+### Celeste
+
+This one is from [Portmaster](https://portmaster.games/detail.html?name=celeste), it is really pretty and really hard.
+
+```bash
+# will run the game in it's location folder
+run ./Celeste
+
+# will move the window to the top left and redize to the matrix size
+xdotool search --class "mono-sgen" windowsize 192 128 windowmove 0 0
+```
+
+### Webcam stream:
+
+Stream the usb webcam with the address /dev/video0 or anything that ffplay can play.
 
 ```Bash
 run ffplay -vf "scale=192:128,hflip" /dev/video0
@@ -28,18 +77,17 @@ run ffplay -vf "scale=192:128,hflip" /dev/video0
 run python Primordis.py
 ```
 
-All the emulators
+### Xclock
 
-Quake
-Quake 2
-Doom
-Doom 2
+Run the simple xclock app that comes with X11.
 
-Celeste
+```bash
+run xclock -geometry 192x128
+```
 
-Pico-8
+### Mednafen
 
-CurseOfTheArrow-V1.8.3-universal.love
+I was able to run a bunch of consoles using [Mednafen](https://mednafen.github.io/)
 
 ## How It Works
 
@@ -152,6 +200,19 @@ You can also adjust the screenshot region using the command-line options to capt
 - Visual effects and animations
 - Media players
 - Any X11 application
+
+## Interesting commands while using Xvfb
+
+```bash
+# necessary to define the current display in the ssh session
+export DISPLAY=:3.0
+
+# this one will list active windows
+xwininfo -root -tree
+
+# and this will resize and reposition the window to your specific led matrix
+xdotool search --class "2s2h.elf" windowsize 192 128 windowmove 0 0
+```
 
 ## Changes from pico8-led
 
