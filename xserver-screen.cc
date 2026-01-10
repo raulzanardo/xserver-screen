@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#define DEFAULT_UPDATE_INTERVAL 10000
+#define DEFAULT_UPDATE_INTERVAL 16667
 #define DEFAULT_SCREENSHOT_X 0
 #define DEFAULT_SCREENSHOT_Y 0
 
