@@ -128,13 +128,25 @@ It had to be done. Running chocolate-doom with modified chocolate-doom.cfg file.
 run chocolate-doom
 ```
 
+<p align="center">
+  <img src="images/doom.png" width="500" alt="doom">
+</p>
+
 ### Quake 2
 
 It is also a cool app to run in the matrix, but I couldn't fix the HUD location and it is really hard to play with the joystick, at least for me it is
 
+<p align="center">
+  <img src="images/quake2.png" width="500" alt="quake2">
+</p>
+
 ### SM64:
 
 This is the port of SM64 that was made for raspberry pi, it was installed via [PiKISS](https://github.com/jmcerrejon/PiKISS)
+
+<p align="center">
+  <img src="images/sm64.png" width="500" alt="sm64">
+</p>
 
 ### 2s2h
 
@@ -149,6 +161,10 @@ run ./2s2h.elf
 xdotool search --class "2s2h.elf" windowsize 192 128 windowmove 0 0
 ```
 
+<p align="center">
+  <img src="images/2s2h.png" width="500" alt="2s2h">
+</p>
+
 ### Half Life 1
 
 Another cool one from [PiKISS](https://github.com/jmcerrejon/PiKISS), this one also need to use xdotool to config it's size and position
@@ -160,6 +176,10 @@ run ./xash3d
 # will move the window to the top left and redize to the matrix size
 xdotool search --class "xash3d" windowsize 192 128 windowmove 0 0
 ```
+
+<p align="center">
+  <img src="images/hl.png" width="500" alt="hl">
+</p>
 
 ### Celeste
 
@@ -173,6 +193,10 @@ run ./Celeste
 xdotool search --class "mono-sgen" windowsize 192 128 windowmove 0 0
 ```
 
+<p align="center">
+  <img src="images/celeste.png" width="500" alt="celeste">
+</p>
+
 ### Webcam stream:
 
 Stream the usb webcam with the address /dev/video0 or anything that ffplay can play.
@@ -181,6 +205,10 @@ Stream the usb webcam with the address /dev/video0 or anything that ffplay can p
 run ffplay -vf "scale=192:128,hflip" /dev/video0
 ```
 
+<p align="center">
+  <img src="images/webcam.png" width="500" alt="webcam">
+</p>
+
 ### Primordis
 
 [Primordis](https://github.com/Transcenduality/primordis) is a cool particle-based life simulation. The application was modified so the screen resolution is smaller, the particle has only one pixel and a few more tweaks so it looks good in a smaller screen.
@@ -188,6 +216,10 @@ run ffplay -vf "scale=192:128,hflip" /dev/video0
 ```bash
 run python Primordis.py
 ```
+
+<p align="center">
+  <img src="images/primordis.png" width="500" alt="primordis">
+</p>
 
 ### Xclock
 
@@ -200,6 +232,15 @@ run xclock -geometry 192x128
 ### Mednafen
 
 I was able to run a bunch of consoles using [Mednafen](https://mednafen.github.io/), it has a really flexible config file.
+
+<p align="center">
+  <img src="images/med_1.png" width="200" alt="med">
+  <img src="images/med_2.png" width="200" alt="med">
+  <img src="images/med_3.png" width="200" alt="med">
+  <img src="images/med_4.png" width="200" alt="med">
+</p>
+
+All this examples can be seen in this [youtube video](https://www.youtube.com/watch?v=l7aEF085hrg).
 
 ## Interesting commands while using Xvfb
 
