@@ -132,6 +132,22 @@ run chocolate-doom
   <img src="images/doom.png" width="500" alt="doom">
 </p>
 
+### Duke Nukem 3D
+
+With the [jonof's](https://github.com/jonof) [jfduke3d](https://github.com/jonof/jfduke3d) port I was able to configure a bunch of the screen settings to match my led matrix.
+
+<p align="center">
+  <img src="images/duke_nuken_3d.png" width="500" alt="doom">
+</p>
+
+### Quake 1
+
+The first quake its a good FPS. This port was made by [Henrique194](https://github.com/Henrique194) it is called [chocolate-quake](https://github.com/Henrique194/chocolate-quake) it is based on chocolate-doom and was the only one I was able to fix the resolution and make it run ok.
+
+<p align="center">
+  <img src="images/quake1.png" width="500" alt="quake2">
+</p>
+
 ### Quake 2
 
 It is also a cool app to run in the matrix, but I couldn't fix the HUD location and it is really hard to play with the joystick, at least for me it is
@@ -264,3 +280,5 @@ This project is based on [jenissimo/pico8-led](https://github.com/jenissimo/pico
 - **Flexible capture region**: Added `-x` and `-y` options to capture from any screen position (default: 0,0 instead of 128,128)
 - **Simplified run script**: Single `run` script accepts any application as argument
 - **System installation**: Added `make install` target for system-wide installation
+
+Also see my personal LED matrix notes and hardware configuration at https://github.com/raulzanardo/my-led-matrix — with configuration snippets, photos, and other notes specific to the physical matrix used with this project.
