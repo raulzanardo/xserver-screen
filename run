@@ -40,7 +40,7 @@ cleanup() {
 # Set up trap to catch SIGINT (Ctrl+C) and SIGTERM
 trap cleanup INT TERM
 
-Xvfb $DISPLAY -screen 0 192x128x24 &
+Xvfb $DISPLAY -screen 0 128x128x24 &
 XVFB_PID=$!
 
 sleep 1
