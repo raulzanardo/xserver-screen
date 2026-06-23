@@ -258,6 +258,69 @@ I was able to run a bunch of consoles using [Mednafen](https://mednafen.github.i
 
 All this examples can be seen in this [youtube video](https://www.youtube.com/watch?v=l7aEF085hrg).
 
+### UxPlay
+
+[UxPlay](https://github.com/FDH2/UxPlay) is an open-source AirPlay server for Linux, macOS, and Windows, allowing you to mirror your iPhone, iPad, or Mac screen (with audio) to your computer, appearing as a shareable window for apps like Zoom or OBS. In this case it creates a display with resolution of 1080x720 and with a scale down to 192x128.
+
+#### The script (uxplay.sh):
+
+```bash
+#!/bin/bash
+# Start uxplay in background
+uxplay -s 192x128 -fps 60 \
+-vd avdec_h264 \
+-vs "queue max-size-buffers=1 max-size-bytes=0 max-size-time=0 ! videoscale ! video/x-raw,width=192,height=128 ! videoconvert ! ximagesink sync=false" \
+-n "rpi4" -vsync -reset 5  &
+UXPID=$!
+# Wait for AirPlay window to appear
+echo "Waiting for AirPlay window from Mac..."
+while true; do
+  WINDOW_ID=$(wmctrl -l | grep "rpi4")
+  if [ ! -z "$WINDOW_ID" ]; then
+    echo "Found AirPlay window"
+    wmctrl -r "rpi4" -b add,fullscreen
+    break
+  fi
+  sleep 1
+done
+# Wait for uxplay process to finish
+wait $UXPID
+```
+
+#### The command:
+
+```bash
+chmod +x uxplay.sh
+run ./uxplay.sh
+```
+
+### ProjectM
+
+[ProjectM](https://github.com/projectM-visualizer/projectm) is a Cross-platform Music Visualization Library. Open-source and Milkdrop-compatible. It remember the winamp visualization. I configured the input to be the microphone from the webcam connected to the PI.
+
+```bash
+run projectM-pulseaudio
+
+xdotool search --class projectM-pulseaudio   windowsize 192 128   windowmove 0 0
+```
+
+### Todo projects
+
+- A map showing the current accumulated rain in my city
+- Picture frame that shows photos in a samba share, with possible clock on top.
+- Audio Spectogram like [Spectroid](https://play.google.com/store/apps/details?id=org.intoorbit.spectrum&hl=pt_BR)
+- Wifi and bluetooth chanel activtivis (based on [this project](https://www.youtube.com/watch?v=6jWQzsv502E) from [Rootkid](https://www.youtube.com/@rootkid_art))
+
+- System monitor: CPU/GPU load, RAM, disk, network graphs and a small log ticker.
+- Calendar & agenda: month view with upcoming events and animated day transitions.
+
+- Retro games: Snake, Tetris, Pong, Breakout — local controls or mobile-as-controller.
+- Multiplayer local games: 2-player pong or competitive snake with split controls.
+- Pixel art editor/viewer: draw on the matrix from desktop or phone, save/load sprites.
+
+- Sensor dashboard: show readings from temperature, humidity, accelerometer, proximity.
+- Power/performance modes: daytime high-brightness, nighttime dimmed, and scheduled profiles.
+
 ## Interesting commands while using Xvfb
 
 ```bash
@@ -269,6 +332,9 @@ xwininfo -root -tree
 
 # and this will resize and reposition the window to your specific led matrix
 xdotool search --class "2s2h.elf" windowsize 192 128 windowmove 0 0
+
+# to send a keyboard press to the virtual screen
+xdotool key Return
 ```
 
 ## Changes from pico8-led
