@@ -19,7 +19,7 @@ The application:
 
 - Raspberry Pi with GPIO pins (Pi 1, 2, 3, 4, or Zero - **NOT Pi 5**)
 - RGB LED Matrix panels (connected via GPIO)
-- rpi-rgb-led-matrix library (included as submodule)
+- rpi-rgb-led-matrix_pwm_experiment library (included as submodule)
 
 ## Installation
 
@@ -101,7 +101,7 @@ Edit the `run` script to adjust your LED matrix configuration:
 - `--led-brightness`: Display brightness 0-100 (default: 60)
 - `--led-panel-type`: Panel driver chip type (default: FM6126A)
 
-For more options, see the [rpi-rgb-led-matrix documentation](https://github.com/hzeller/rpi-rgb-led-matrix).
+For more options, see the [rpi-rgb-led-matrix_pwm_experiment documentation](https://github.com/kingdo9/rpi-rgb-led-matrix_pwm_experiment).
 
 ### Display Resolution
 
